@@ -1,2 +1,35 @@
+spring:
+    datasource:
+        name: SmtpDataSource
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:mq_db;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        username: mq_schema
+        password: mq_schema
+        max-active: 100
+        max-idle: 95
+        min-idle: 5
+        initial-size: 10    
+        test-while-idle: true
+    jpa:
+        show-sql: true
+        generate-ddl: true
+        hibernate:
+            ddl-auto: create-drop
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.H2Dialect
+    mvc:
+        view:
+            prefix: /WEB-INF/html/
+            suffix: .html
+server:
+    port: 8188
 consumer:
   start: true
+rabbitmq:
+  host: localhost
+  port: 25672
+  username: admin
+  password: admin
+  queue:
+    name: eventlog.queue

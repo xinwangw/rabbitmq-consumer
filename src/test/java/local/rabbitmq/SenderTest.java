@@ -1,6 +1,8 @@
-package local.ampbroker;
+package local.rabbitmq;
 
 import junit.framework.TestCase;
+import local.rabbitmq.App;
+
 import com.rabbitmq.client.ConnectionFactory;
 
 import com.rabbitmq.client.Connection;
@@ -26,6 +28,9 @@ public class SenderTest extends TestCase {
 	@Autowired
 	private ConnectionFactory factory;
 	
+	@Autowired
+	private AppConfiguration appConfig;
+	
 	private Channel channel;
 	private Connection connection;
 	
@@ -33,7 +38,7 @@ public class SenderTest extends TestCase {
 	public void before() throws IOException, TimeoutException{
 		connection = factory.newConnection();
 	    channel = connection.createChannel();
-	    channel.queueDeclare(App.QUEUE_NAME, false, false, false, null);
+	    channel.queueDeclare(appConfig.getQueueName(), false, false, false, null);
 	}
 	
 	@After
@@ -45,14 +50,14 @@ public class SenderTest extends TestCase {
 	@Test
 	public void test() throws IOException, TimeoutException{
 	    String message = "Hello World!";
-	    channel.basicPublish("", App.QUEUE_NAME, null, message.getBytes());
+	    channel.basicPublish("", appConfig.getQueueName(), null, message.getBytes());
 	    System.out.println(" [x] Sent '" + message + "'");
 	}
 	
 	@Test
 	public void test2() throws IOException, TimeoutException{
 	    String message = "Hello World 2!";
-	    channel.basicPublish("", App.QUEUE_NAME, null, message.getBytes());
+	    channel.basicPublish("", appConfig.getQueueName(), null, message.getBytes());
 	    System.out.println(" [x] Sent '" + message + "'");
 	}
 }
